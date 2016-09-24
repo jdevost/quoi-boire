@@ -1,0 +1,26 @@
+{
+  "name": "quoi-boire",
+  "version": "1.0.0",
+  "description": "Quoi boire? - outil de recherche pour la SAQ",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "css-loader": "^0.25.0",
+    "grunt": "^1.0.1",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-sass": "^1.2.1",
+    "jshint-stylish": "^2.2.1",
+    "json-loader": "^0.5.4",
+    "node-sass": "^3.10.0",
+    "sass-loader": "^4.0.2",
+    "style-loader": "^0.13.1",
+    "svg-url-loader": "^1.1.0",
+    "webpack": "^1.13.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jerome Devost",
+  "license": "ISC"
+}

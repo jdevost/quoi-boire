@@ -1,0 +1,5 @@
+.sonar/
+artifacts/
+node_modules/
+html-report/
+public/bin

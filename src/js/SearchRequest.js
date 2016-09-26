@@ -1,7 +1,12 @@
-define(['Ajax'], function(Ajax) {
-	let _TOKEN = document.cookie.replace(/(?:(?:^|.*;\s*)coveoToken\s*\=\s*([^;]*).*$)|^.*$/, '$1');
+define(['./Ajax'], function(Ajax) {
+	'use strict';
+
 
 	class SearchRequest extends Ajax {
+		constructor(config) {
+			super(config);
+		}
+
 		post(uri, json) {
 			json.enableDidYouMean = true;
 			json.numberOfResults = 25;
@@ -27,12 +32,7 @@ define(['Ajax'], function(Ajax) {
 				'tppagebody'
 			];
 
-			if (!_TOKEN) {
-				// I don't usually do alerts, this is only so I can't miss it when token isn't defined.
-				alert('Token is missing');
-			}
-
-			return super.post(uri, json, {Authorization: 'Bearer ' + _TOKEN});
+			return super.post(uri, json);
 		}
 	}
 

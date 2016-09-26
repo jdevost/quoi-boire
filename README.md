@@ -13,12 +13,14 @@ After cloning this repository on your machine, you need to build the project usi
 
 This project is meant to be served from a web server. I use Apache. Add this config to your `/etc/apache2/httpd.conf`
 ```
-Alias /quoi-boire [path/to/repository]/public
-<Directory "[path/to/repository]/public">
+Alias /quoi-boire [path/to/repository]/dist
+<Directory "[path/to/repository]/dist">
     Options Indexes FollowSymLinks MultiViews
     Require all granted
 </Directory>
 ```
 Then you will be able to access it from your machine at `http://localhost/quoi-boire`.
+
+### Token required
 To use the Search API, you need a token. You will get an alert if it's not set up. The project expect the token to be stored in your cookies. Once you have accessed your page for the first time, open the Browser Console and add your token to the cookies:
 `document.cookie = "coveoToken=YOUR_TOKEN";`

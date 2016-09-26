@@ -1,6 +1,9 @@
 var webpack = require('webpack');
 
 module.exports = function(grunt) {
+
+	require('load-grunt-tasks')(grunt);
+
 	// Project configuration.
 	grunt.initConfig({
 		watch: {
@@ -26,7 +29,21 @@ module.exports = function(grunt) {
 					outputStyle: 'compressed'
 				},
 				files: {
-					'./public/bin/quoi-boire.css': './src/sass/all.scss'
+					'./dist/quoi-boire.css': './src/sass/all.scss'
+				}
+			}
+		},
+
+		babel: {
+			options: {
+				sourceMap: true,
+				presets: ['es2015']
+			},
+			dist: {
+				files: {
+					'dist/Ajax.js': 'src/js/Ajax.js',
+					'dist/QuoiBoireApp.js': 'src/js/QuoiBoireApp.js',
+					'dist/SearchRequest.js': 'src/js/SearchRequest.js'
 				}
 			}
 		},
@@ -41,12 +58,23 @@ module.exports = function(grunt) {
 			}
 		},
 
+		intern: {
+			chrome: {
+				options:{
+					runType: 'runner',
+					config: 'tests/intern.js',
+					TOKEN: grunt.option('token'),
+					suites: ['tests/unit/all']
+				}
+			}
+		},
+
 		webpack: {
 			coveoChallenge: {
 				// webpack options
-				entry: './src/js/app.js',
+				entry: './src/js/QuoiBoireApp.js',
 				output: {
-					path: './public/bin/',
+					path: './dist/',
 					filename: 'quoi-boire.js'
 				},
 				'optimize-minimize': true,
@@ -54,8 +82,8 @@ module.exports = function(grunt) {
 					new webpack.optimize.LimitChunkCountPlugin({maxChunks:1})
 // 					new webpack.optimize.UglifyJsPlugin({
 //						compress: {
-//      					warnings: false
-//     					}
+//	  					warnings: false
+//	 					}
 // 					})
 				],
 				resolve: {
@@ -76,7 +104,9 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-webpack');
+	grunt.loadNpmTasks('intern');
 
 	grunt.registerTask('build', 'Builds (compress) JavaScript and pre-process Sass files into CSS', ['sass', 'jshint', 'webpack']);
 	grunt.registerTask('default', ['watch']);
+	grunt.registerTask('tests', 'Run unit tests', ['babel', 'intern']);
 };

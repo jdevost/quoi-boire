@@ -14,8 +14,8 @@ module.exports = function(grunt) {
 				exitCode: [0,1]
 			},
 			startSelenium: {
-				cwd: 'node_modules/intern/node_modules/digdug/selenium-standalone',
-				command: 'java -jar selenium-server-standalone-2.53.1.jar &',
+				cwd: 'node_modules/selenium-server-standalone-jar/jar',
+				command: 'java -jar selenium-server-standalone-2.53.1.jar -Dwebdriver.chrome.driver=../../chromedriver/lib/chromedriver/chromedriver &',
 				stdout: false,
 				stderr: false
 			},

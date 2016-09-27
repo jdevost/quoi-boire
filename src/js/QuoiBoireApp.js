@@ -55,7 +55,7 @@ define(['SearchRequest', 'SearchSummary', 'Facets', 'Util'], function(SearchRequ
 				pastille = pastille ? `<span class="pastille" style="background-color: ${pastille};">&nbsp;</span>` : '';
 
 				return `<div class="item" id="item${idx}" style="background-image:url(${item.raw.tpthumbnailuri})" title="${item.raw.tpnotededegustation}">
-					<div class="item-price">${item.raw.tpprixnum.toFixed(2)}</div>
+					<div class="item-price">${item.raw.tpprixnormal}</div>
 					<a href="${item.uri}" class="item-name" target="_blank">${item.title}</a>
 					<div>
 						${item.raw.tpproducteur}

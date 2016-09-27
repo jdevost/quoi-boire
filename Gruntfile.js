@@ -46,7 +46,8 @@ module.exports = function(grunt) {
 					'dist/Facets.js': 'src/js/Facets.js',
 					'dist/QuoiBoireApp.js': 'src/js/QuoiBoireApp.js',
 					'dist/SearchRequest.js': 'src/js/SearchRequest.js',
-					'dist/SearchSummary.js': 'src/js/SearchSummary.js'
+					'dist/SearchSummary.js': 'src/js/SearchSummary.js',
+					'dist/Util.js': 'src/js/Util.js'
 				}
 			}
 		},

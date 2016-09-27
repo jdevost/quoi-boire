@@ -1,4 +1,4 @@
-define(['SearchRequest', 'SearchSummary', 'Facets'], function(SearchRequest, SearchSummary, Facets) {
+define(['SearchRequest', 'SearchSummary', 'Facets', 'Util'], function(SearchRequest, SearchSummary, Facets, Util) {
 	'use strict';
 
 	class QuoiBoireApp {
@@ -49,8 +49,12 @@ define(['SearchRequest', 'SearchSummary', 'Facets'], function(SearchRequest, Sea
 		}
 
 		showResults(searchResponse) {
-			var items = searchResponse.results.map((item,idx)=>
-				`<div class="item" id="item${idx}" style="background-image:url(${item.raw.tpthumbnailuri})" title="${item.raw.tpnotededegustation}">
+			let items = searchResponse.results.map((item,idx)=> {
+
+				let pastille = Util.getColorForPastille(item.raw.tppastilledegout);
+				pastille = pastille ? `<span class="pastille" style="background-color: ${pastille};">&nbsp;</span>` : '';
+
+				return `<div class="item" id="item${idx}" style="background-image:url(${item.raw.tpthumbnailuri})" title="${item.raw.tpnotededegustation}">
 					<div class="item-price">${item.raw.tpprixnum.toFixed(2)}</div>
 					<a href="${item.uri}" class="item-name" target="_blank">${item.title}</a>
 					<div>
@@ -58,8 +62,10 @@ define(['SearchRequest', 'SearchSummary', 'Facets'], function(SearchRequest, Sea
 						${item.raw.tpmillesime||''}
 					</div>
 					<div class="item-desc">${item.raw.tpcategorieraw}</div>
-				</div>`
-			);
+					${pastille}
+				</div>`;
+
+			});
 
 			this.$('rslt-list').innerHTML = items.join('');
 

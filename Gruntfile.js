@@ -42,8 +42,11 @@ module.exports = function(grunt) {
 			dist: {
 				files: {
 					'dist/Ajax.js': 'src/js/Ajax.js',
+					'dist/Facet.js': 'src/js/Facet.js',
+					'dist/Facets.js': 'src/js/Facets.js',
 					'dist/QuoiBoireApp.js': 'src/js/QuoiBoireApp.js',
-					'dist/SearchRequest.js': 'src/js/SearchRequest.js'
+					'dist/SearchRequest.js': 'src/js/SearchRequest.js',
+					'dist/SearchSummary.js': 'src/js/SearchSummary.js'
 				}
 			}
 		},

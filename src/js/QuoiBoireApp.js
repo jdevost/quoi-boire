@@ -1,8 +1,12 @@
-define(['SearchRequest'], function(SearchRequest) {
+define(['SearchRequest', 'SearchSummary', 'Facets'], function(SearchRequest, SearchSummary, Facets) {
 	'use strict';
 
 	class QuoiBoireApp {
 		constructor() {
+			this.facets = new Facets();
+			this.searchRequest = new SearchRequest();
+			this.searchSummary = new SearchSummary();
+
 			this._setEvent('srch-input', 'keypress', e=>{
 				if (e.charCode === 13) {
 					// do search
@@ -11,8 +15,8 @@ define(['SearchRequest'], function(SearchRequest) {
 			});
 			this._setEvent('srch-btn', 'click', this.search.bind(this));
 
-			this._setEvent('list-rows-btn', 'click', this.changeListStyle.bind(this,'rows'));
-			this._setEvent('list-tiles-btn', 'click', this.changeListStyle.bind(this,'tiles'));
+			// this._setEvent('list-rows-btn', 'click', this.changeListStyle.bind(this,'rows'));
+			// this._setEvent('list-tiles-btn', 'click', this.changeListStyle.bind(this,'tiles'));
 
 			if ( /(\?|&)q=([^?&]+)/.test(window.location.search) ) {
 				this.$('srch-input').value = decodeURIComponent(RegExp.$2);
@@ -34,8 +38,8 @@ define(['SearchRequest'], function(SearchRequest) {
 				return;
 			}
 			history.replaceState({q: q}, 'Search ' + q, '?q=' + q);
-			var ajax = new SearchRequest();
-			ajax.post('https://cloudplatform.coveo.com/rest/search', {q: q})
+
+			this.searchRequest.post('https://cloudplatform.coveo.com/rest/search', {q: q})
 				.then((response)=>{
 					this.showResults(response);
 				})
@@ -58,6 +62,9 @@ define(['SearchRequest'], function(SearchRequest) {
 			);
 
 			this.$('rslt-list').innerHTML = items.join('');
+
+			this.searchSummary.show(searchResponse);
+			this.facets.show(searchResponse);
 		}
 
 		changeListStyle(sClass) {

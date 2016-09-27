@@ -91,26 +91,48 @@ body {
 	padding: 0 10px;
 	margin: 5px 0;
 	line-height: 40px;
+	position: relative;
+	width: 70%;
 
 	input {
+		width: 100%;
 		margin: 0;
-		padding: 2px 8px;
+		padding: 2px 26px 2px 8px;
 		background: transparent;
 		border: 0;
 		font-size: 18px;
-		line-height: 24px;
+		line-height: 36px;
 		outline: none;
+	}
+	.btn {
+		cursor: pointer;
+		background-image: url(./res/search.svg);
+		background-repeat: no-repeat;
+		background-size: 24px 24px;
+		background-position: center center;
+
+		position: absolute;
+		right: 0;
+		width: 32px;
+		height: 100%;
 	}
 }
 
-.fct-cntr {
-	background-color: beige;
-	width: 100px;
-}
-
-.btn {
-	border: 1px solid #ccc;
-	cursor: pointer;
+.facets {
+	overflow: auto;
+	.facet {
+		margin: 5px;
+		padding: 10px;
+		border: 1px solid black;
+		.facet-label {
+			padding-bottom: 5px;
+		}
+		.facet-value {
+			padding: 0 0 5px 10px;
+			font-size: 80%;
+			white-space: nowrap;
+		}
+	}
 }
 
 @media screen and (max-width: 480px) {

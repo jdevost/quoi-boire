@@ -1,15 +1,10 @@
 define(['./Ajax'], function(Ajax) {
 	'use strict';
 
-
 	class SearchRequest extends Ajax {
-		constructor(config) {
-			super(config);
-		}
-
 		post(uri, json) {
 			json.enableDidYouMean = true;
-			json.numberOfResults = 25;
+			// json.numberOfResults = 25;
 			// json.firstResult = 25;
 			json.generateAutomaticRanges = true;
 			json.groupBy = [

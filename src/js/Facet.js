@@ -1,4 +1,4 @@
-define(['Util'], function(Util) {
+define(['./Util'], function(Util) {
 	'use strict';
 
 	class Facet {

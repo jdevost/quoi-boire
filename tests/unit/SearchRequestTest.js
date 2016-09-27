@@ -1,20 +1,17 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dist/SearchRequest',
+	'src/js/SearchRequest',
 	'intern'
 ], function(registerSuite, assert, SearchRequest, intern) {
 	'use strict';
 
 	registerSuite({
 		name: 'SearchRequest Tests',
-		setup: function() {
-		},
-		teardown: function() {
-		},
 
-		beforeEach: function() {
-		},
+		setup: function() {},
+		teardown: function() {},
+		beforeEach: function() {},
 		afterEach: function() {},
 
 		testInit: function(){
@@ -27,7 +24,7 @@ define([
 
 			return searchRequest.post('https://cloudplatform.coveo.com/rest/search', {q: 'Merlot'})
 				.then(function(responseJson){
-					assert.equal( responseJson.totalCount, 1258 );
+					assert.isAtLeast( responseJson.totalCount, 100 );
 				});
 		}
 	});

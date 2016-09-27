@@ -3,7 +3,7 @@ define(['./Facet'], function(Facet) {
 
 	class Facets {
 
-		render(json) {
+		static render(json) {
 			var facets = json.groupByResults.map( o=> {
 				return Facet.render(o);
 			});
@@ -12,7 +12,7 @@ define(['./Facet'], function(Facet) {
 
 		show(json) {
 			var nContainer = document.getElementById('fct-cntr');
-			nContainer.innerHTML = this.render(json);
+			nContainer.innerHTML = Facets.render(json);
 		}
 	}
 

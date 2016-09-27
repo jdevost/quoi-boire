@@ -1,3 +1,6 @@
 define([
-	'./SearchRequestTest'
+	'./FacetTest',
+	'./FacetsTest',
+	'./SearchRequestTest',
+	'./UtilTest'
 ], function () {});

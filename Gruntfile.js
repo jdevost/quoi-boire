@@ -6,6 +6,26 @@ module.exports = function(grunt) {
 
 	// Project configuration.
 	grunt.initConfig({
+		exec: {
+			killSelenium: {
+				command: 'pkill -f "java -jar .*selenium-server-standalone"',
+				stdout: false,
+				stderr: false,
+				exitCode: [0,1]
+			},
+			startSelenium: {
+				cwd: 'node_modules/intern/node_modules/digdug/selenium-standalone',
+				command: 'java -jar selenium-server-standalone-2.53.1.jar &',
+				stdout: false,
+				stderr: false
+			},
+			waitForSelenium: {
+				command: 'until $(curl -f -I -o /dev/null -s http://localhost:4444/wd/hub); do \n sleep 1 \n done',
+				stdout: false,
+				stderr: false
+			}
+		},
+
 		watch: {
 			js: {
 				files: ['./src/**/*.js'],
@@ -63,11 +83,21 @@ module.exports = function(grunt) {
 		},
 
 		intern: {
-			chrome: {
+			local: {
 				options:{
 					runType: 'runner',
 					config: 'tests/intern.js',
 					TOKEN: grunt.option('token'),
+					suites: ['tests/unit/all']
+				}
+			},
+			saucelabs: {
+				options:{
+					runType: 'runner',
+					config: 'tests/intern-saucelabs.js',
+					TOKEN: grunt.option('token'),
+					sluser: grunt.option('sluser'),
+					slkey: grunt.option('slkey'),
 					suites: ['tests/unit/all']
 				}
 			}
@@ -106,11 +136,14 @@ module.exports = function(grunt) {
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-exec');
 	grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-webpack');
 	grunt.loadNpmTasks('intern');
 
 	grunt.registerTask('build', 'Builds (compress) JavaScript and pre-process Sass files into CSS', ['sass', 'jshint', 'webpack']);
 	grunt.registerTask('default', ['watch']);
-	grunt.registerTask('tests', 'Run unit tests', ['babel', 'intern']);
+
+	grunt.registerTask('tests', 'Run unit tests', ['exec:killSelenium', 'exec:startSelenium', 'exec:waitForSelenium','intern:local', 'exec:killSelenium']);
+	grunt.registerTask('tests-sl', 'Run unit tests', ['exec:killSelenium', 'intern:saucelabs']);
 };

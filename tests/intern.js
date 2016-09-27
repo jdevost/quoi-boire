@@ -5,16 +5,14 @@ define(function() {
 		reporters : ['Console', {id: 'Lcov', filename: 'lcov.info'}, {id: 'LcovHtml', directory: 'html-report'}],
 
 		environments : [
-			{ browserName : 'chrome', version : 'latest', platform : 'ANY' }
+			{ browserName : 'chrome', version : '53.0', platform : 'OS X 10.11' }
 		],
 
 		maxConcurrency : 1,
 
-		tunnel: 'SeleniumTunnel',
-
 		loaders: {
 			'host-node': 'requirejs',
-			'host-browser': '../../bower_components/requirejs/require.js'
+			'host-browser': '../../node_modules/requirejs/require.js'
 		},
 
 		loaderOptions : {
@@ -25,6 +23,6 @@ define(function() {
 			'tests/unit/all'
 		],
 
-		excludeInstrumentation: /node_modules|bower_components/
+		excludeInstrumentation: /node_modules|^tests/
 	};
 });

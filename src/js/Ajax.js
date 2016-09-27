@@ -2,8 +2,8 @@ define([], function() {
 	'use strict';
 
 	class Ajax {
-		constructor(config) {
-			this.token = document.cookie.replace(/(?:(?:^|.*;\s*)coveoToken\s*\=\s*([^;]*).*$)|^.*$/, '$1') || (config && config.token);
+		constructor() {
+			this.token = document.cookie.replace(/(?:(?:^|.*;\s*)coveoToken\s*\=\s*([^;]*).*$)|^.*$/, '$1');
 		}
 
 		post(uri, json, headers = {}) {

@@ -37,6 +37,17 @@ define([], function() {
 				// 'Corsé et fumé.': '#452d26'
 			}[(''+sPastille).replace(/[^0-9a-z]/gi,'_')] || null;
 		}
+
+		static htmlEncode(str) {
+			let charMap = {
+				'&': '&amp;',
+				'<': '&lt;',
+				'>': '&gt;',
+				'"': '&quot;'
+			};
+
+			return (str || '').replace(/[<>&"]/g, (m) => charMap[m] );
+		}
 	}
 
 	return Util;

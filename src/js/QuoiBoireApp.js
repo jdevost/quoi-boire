@@ -3,9 +3,9 @@ define(['SearchRequest', 'SearchSummary', 'Facets', 'Util'], function(SearchRequ
 
 	class QuoiBoireApp {
 		constructor() {
-			this.facets = new Facets();
 			this.searchRequest = new SearchRequest();
-			this.searchSummary = new SearchSummary();
+			this.searchSummary = new SearchSummary(this);
+			this.facets = new Facets(this);
 
 			this._setEvent('srch-input', 'keypress', e=>{
 				if (e.charCode === 13) {
@@ -15,12 +15,8 @@ define(['SearchRequest', 'SearchSummary', 'Facets', 'Util'], function(SearchRequ
 			});
 			this._setEvent('srch-btn', 'click', this.search.bind(this));
 
-			// this._setEvent('list-rows-btn', 'click', this.changeListStyle.bind(this,'rows'));
-			// this._setEvent('list-tiles-btn', 'click', this.changeListStyle.bind(this,'tiles'));
-
 			if ( /(\?|&)q=([^?&]+)/.test(window.location.search) ) {
-				this.$('srch-input').value = decodeURIComponent(RegExp.$2);
-				this.search();
+				this.newSearch( decodeURIComponent(RegExp.$2) );
 			}
 		}
 
@@ -32,6 +28,37 @@ define(['SearchRequest', 'SearchSummary', 'Facets', 'Util'], function(SearchRequ
 			this.$(sId).addEventListener(sEvent, fCallback);
 		}
 
+		_updateSearch(action, field, value) {
+			return this.searchRequest[action](field, value)
+				.then((response)=>{
+					this.showResults(response);
+				})
+				.catch(
+					(error)=>{console.warn(error);}
+				);
+		}
+
+		addFilter(field, value) {
+			return this._updateSearch('addFilter', field, value);
+		}
+
+		getFiltersAndSort() {
+			return this.searchRequest.getFiltersAndSort();
+		}
+
+		newSearch(searchTerm) {
+			this.$('srch-input').value = searchTerm;
+			this.search();
+		}
+
+		removeFilter(field, value) {
+			return this._updateSearch('removeFilter', field, value);
+		}
+
+		renderPrice(raw) {
+			return `<div class="item-price"><span class="item-price-strike">${raw.tpprixinitial || ''}</span> ${raw.tpprixrabais || raw.tpprixnormal}</div>`;
+		}
+
 		search() {
 			var q = this.$('srch-input').value.trim();
 			if (!q) {
@@ -39,7 +66,7 @@ define(['SearchRequest', 'SearchSummary', 'Facets', 'Util'], function(SearchRequ
 			}
 			history.replaceState({q: q}, 'Search ' + q, '?q=' + q);
 
-			this.searchRequest.post('https://cloudplatform.coveo.com/rest/search', {q: q})
+			this.searchRequest.newSearch({q: q})
 				.then((response)=>{
 					this.showResults(response);
 				})
@@ -55,7 +82,7 @@ define(['SearchRequest', 'SearchSummary', 'Facets', 'Util'], function(SearchRequ
 				pastille = pastille ? `<span class="pastille" style="background-color: ${pastille};">&nbsp;</span>` : '';
 
 				return `<div class="item" id="item${idx}" style="background-image:url(${item.raw.tpthumbnailuri})" title="${item.raw.tpnotededegustation}">
-					<div class="item-price">${item.raw.tpprixnormal}</div>
+					${this.renderPrice(item.raw)}
 					<a href="${item.uri}" class="item-name" target="_blank">${item.title}</a>
 					<div>
 						${item.raw.tpproducteur}
@@ -69,13 +96,13 @@ define(['SearchRequest', 'SearchSummary', 'Facets', 'Util'], function(SearchRequ
 
 			this.$('rslt-list').innerHTML = items.join('');
 
-			this.searchSummary.show(searchResponse);
-			this.facets.show(searchResponse);
+			let filtersAndSort = this.getFiltersAndSort();
+			this.searchSummary.show(searchResponse, filtersAndSort);
+			this.facets.show(searchResponse, filtersAndSort);
 		}
 
-		changeListStyle(sClass) {
-			var nList = this.$('rslt-list');
-			nList.setAttribute('class', nList.getAttribute('class').replace( /\b(rows|tiles)\s*/g,'' ).trim() + ' ' + sClass);
+		sort(field) {
+			return this._updateSearch('sort', field);
 		}
 
 	}

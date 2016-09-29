@@ -32,12 +32,16 @@ define(['./Util'], function(Util) {
 				json.values = this._addPastilleColor(json.values);
 			}
 
+			if ( !(json.values && json.values.length) ) {
+				return '';
+			}
+
 			let values = json.values.map(v=>{
 				var pastille = v.pastille ? `<span class="facet-pastille" style="background-color: ${v.pastille};">&nbsp;</span>` : '';
 				return `<div class="facet-value" data-lookup="${v.LookupValue}">${pastille}${v.value} (${v.numberOfResults})</div>`;
 			});
 
-			return `<div class="facet">
+			return `<div class="facet" data-lookup="${json.field}">
 				<div class="facet-label">${json.field}</div>
 				${values.join('')}
 			</div>`;

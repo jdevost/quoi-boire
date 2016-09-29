@@ -34,8 +34,12 @@ define([], function() {
 					req.setRequestHeader('Authorization', 'Bearer ' + this.token);
 				}
 				else {
-					// I don't usually do alerts, this is only so I can't miss it when token isn't defined.
-					alert('Token is missing. ' + this);
+					// Token is missing, show an error.
+					document.getElementsByClassName('bottom')[0].innerHTML =
+						`<div style="color:red;">
+							<br><br>&nbsp; &nbsp; &nbsp;
+							Token is missing. Set it up in your cookies.
+						</div>`;
 				}
 
 				req.send( JSON.stringify(json) );

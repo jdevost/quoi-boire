@@ -1,0 +1,47 @@
+@import 'variables';
+
+.search-summary {
+	margin: 5px;
+}
+
+.query-correction, .filter {
+	display: inline-block;
+	border: 1px solid #cfcfcf;
+	padding: 2px 8px;
+	margin: 0 5px;
+	cursor: pointer;
+}
+
+.filters {
+	color: black;
+	display: flex;
+	& > div {
+		margin-right: 20px;
+	}
+
+	.filter-remove {
+		width: 16px;
+		height: 16px;
+		line-height: 14px;
+		transform: rotate(45deg);
+		background-color: silver;
+		border-radius: 50%;
+		text-align: center;
+		display: inline-block;
+	}
+}
+
+.sort-options {
+	color: black;
+	font-size: 12px;
+	float: right;
+	.sort-field {
+		display: inline-block;
+		margin-right: 10px;
+		cursor: pointer;
+
+		&.selected {
+			font-weight: bold;
+		}
+	}
+}

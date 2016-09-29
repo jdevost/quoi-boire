@@ -1,0 +1,78 @@
+@import 'variables';
+
+.list {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.item {
+	transition: width 2s, height 2s, transform 2s;
+
+	border: 1px solid #ccc;
+	width: 300px;
+	display: inline-block;
+	margin: 5px;
+	padding: 10px;
+
+	padding: 10px 10px 10px 80px;
+	background-position: 8px center;
+	background-size: 66px auto;
+	background-repeat: no-repeat;
+
+	min-height: 100px;
+	cursor: normal;
+
+	position: relative;
+
+	.item-name {
+		text-decoration: none;
+		color: inherit;
+	}
+	.item-desc {
+		font-size: 80%;
+	}
+	.item-price {
+		color: #000;
+		font-size: 24px;
+		font-family: 'Yatra One', cursive;
+		display: inline-block;
+		float: right;
+
+		.item-price-strike {
+			font-size: 16px;
+			color: red;
+			display: block;
+			text-align: right;
+			text-decoration: line-through;
+		}
+	}
+
+	.pastille {
+		background-color: transparent;
+		width: 60px;
+		height: 60px;
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		z-index: -1;
+		border-radius: 100% 0 0;
+	}
+}
+
+@media screen and (max-width: 700px) {
+	.list {
+		display: block;
+		width: 100%;
+
+		.item {
+			width: auto;
+			display: block;
+			border-width: 0 0 1px;
+			margin-bottom: 0;
+
+			background-size: 36px auto;
+			min-height: 50px;
+			padding-left: 50px;
+		}
+	}
+}

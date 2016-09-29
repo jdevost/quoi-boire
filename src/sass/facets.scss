@@ -1,0 +1,39 @@
+@import 'variables';
+
+.facets {
+	overflow: auto;
+	.facet {
+		margin: 5px;
+		padding: 10px;
+		border: 1px solid black;
+
+		.facet-label {
+			padding-bottom: 5px;
+		}
+
+		.facet-value {
+			padding: 0 0 5px 10px;
+			font-size: 80%;
+			white-space: nowrap;
+			cursor: pointer;
+
+			&:hover {
+				color: $coveo-orange;
+			}
+		}
+
+
+		.facet-pastille {
+			border-radius: 50%;
+			width: 16px;
+			margin-right: 6px;
+			display: inline-block;
+		}
+	}
+}
+
+@media screen and (max-width: 700px) {
+	.facets {
+		display: none;
+	}
+}

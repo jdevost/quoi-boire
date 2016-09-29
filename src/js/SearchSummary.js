@@ -94,6 +94,7 @@ define(['./Util'], function(Util) {
 			this._setEventHandlers('filter', this.onRemoveFilter);
 			this._setEventHandlers('sort-field', this.onSort);
 		}
+
 	}
 
 	return SearchSummary;

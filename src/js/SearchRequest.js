@@ -7,6 +7,15 @@ define(['./Ajax'], function(Ajax) {
 		constructor() {
 			super();
 			this.reset();
+			this._PAGE_LENGTH = 20;
+		}
+
+		_sendSearchRequest(json) {
+			return super.post('https://cloudplatform.coveo.com/rest/search', json)
+				.then((response)=>{
+					this._totalCount = response.totalCount;
+					return response;
+				});
 		}
 
 		addFilter(field, value) {
@@ -36,12 +45,31 @@ define(['./Ajax'], function(Ajax) {
 			return advancedQuery.join(' AND ');
 		}
 
+		nextPage() {
+			if (! this._nextPageInProgress) {
+				this._firstResult = this._firstResult + this._PAGE_LENGTH;
+
+				if ( this._firstResult <= this._totalCount ) {
+					console.log('nextPage GO!');
+					this._nextPageInProgress = true;
+					this._json.firstResult = this._firstResult;
+
+					return this._sendSearchRequest(this._json)
+						.then( response => {
+							this._nextPageInProgress = false;
+							return response;
+						});
+				}
+			}
+			return Promise.resolve();
+		}
+
 		newSearch(json) {
 			this.reset();
 
 			json.enableDidYouMean = true;
-			// json.numberOfResults = 200;
-			// json.firstResult = 25;
+			json.numberOfResults = this._PAGE_LENGTH;
+			json.firstResult = this._firstResult;
 			json.generateAutomaticRanges = true;
 			json.groupBy = [
 				{field: '@tpcategorie', sortCriteria: 'AlphaAscending'},
@@ -66,7 +94,7 @@ define(['./Ajax'], function(Ajax) {
 
 			this._json = json;
 
-			return super.post('https://cloudplatform.coveo.com/rest/search', json);
+			return this._sendSearchRequest(json);
 		}
 
 		removeFilter(field, value) {
@@ -81,6 +109,7 @@ define(['./Ajax'], function(Ajax) {
 
 		reset() {
 			this._filters = {};
+			this._firstResult = 1;
 			this._sort = { field: SORT_RELEVANCY, order: '' };
 		}
 
@@ -103,7 +132,9 @@ define(['./Ajax'], function(Ajax) {
 			this._json.aq = filters;
 			this._json.sortCriteria = [this._sort.field, this._sort.order].join(' ').trim();
 
-			return super.post('https://cloudplatform.coveo.com/rest/search', this._json);
+ 			this._json.firstResult = this._firstResult = 1;
+
+			return this._sendSearchRequest(this._json);
 		}
 	}
 

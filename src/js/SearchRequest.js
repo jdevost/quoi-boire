@@ -50,7 +50,6 @@ define(['./Ajax'], function(Ajax) {
 				this._firstResult = this._firstResult + this._PAGE_LENGTH;
 
 				if ( this._firstResult <= this._totalCount ) {
-					console.log('nextPage GO!');
 					this._nextPageInProgress = true;
 					this._json.firstResult = this._firstResult;
 
@@ -67,6 +66,9 @@ define(['./Ajax'], function(Ajax) {
 		newSearch(json) {
 			this.reset();
 
+			json.searchHub = 'default';
+			json.language = 'en';
+			json.pipeline = 'default';
 			json.enableDidYouMean = true;
 			json.numberOfResults = this._PAGE_LENGTH;
 			json.firstResult = this._firstResult;
@@ -83,6 +85,7 @@ define(['./Ajax'], function(Ajax) {
 			json.sortCriteria = [this._sort.field, this._sort.order].join(' ').trim();
 
 			json.fieldsToExclude = [
+				'excerpt', 'Excerpt',
 				'sysconcepts',
 				'tpcoteexpertraw',
 				'tpdisponibiliteraw',
@@ -109,7 +112,7 @@ define(['./Ajax'], function(Ajax) {
 
 		reset() {
 			this._filters = {};
-			this._firstResult = 1;
+			this._firstResult = 0;
 			this._sort = { field: SORT_RELEVANCY, order: '' };
 		}
 
@@ -132,7 +135,7 @@ define(['./Ajax'], function(Ajax) {
 			this._json.aq = filters;
 			this._json.sortCriteria = [this._sort.field, this._sort.order].join(' ').trim();
 
- 			this._json.firstResult = this._firstResult = 1;
+ 			this._json.firstResult = this._firstResult = 0;
 
 			return this._sendSearchRequest(this._json);
 		}

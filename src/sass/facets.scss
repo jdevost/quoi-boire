@@ -2,23 +2,35 @@
 
 .facets {
 	overflow: auto;
+	background-color: $header-back;
+
 	.facet {
+		background-color: $facet-back;
+		background-image: url('./res/divider.svg');
+	    background-size: 50px 50px;
+	    background-repeat: no-repeat;
+	    background-position: center 0;
+
+		padding: 20px 10px 10px;
 		margin: 5px;
-		padding: 10px;
-		border: 1px solid black;
+
+		color: $facet-text;
 
 		.facet-label {
 			padding-bottom: 5px;
+			color: $plain-text;
 		}
 
 		.facet-value {
-			padding: 0 0 5px 10px;
+			border-radius: 5px;
+			padding: 3px 10px;
 			font-size: 80%;
 			white-space: nowrap;
 			cursor: pointer;
 
 			&:hover {
-				color: $coveo-orange;
+				color: $facet-text-hover;
+				background-color: $facet-back-hover;
 			}
 		}
 

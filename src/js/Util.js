@@ -27,6 +27,26 @@ define([], function() {
 			}[sPastille] || null;
 		}
 
+		static getShortNameForPastille(sPastille) {
+			return {
+				'Fruité et léger.': 'F/L',
+				'Fruité et généreux.': 'F/G',
+				'Aromatique et souple.': 'A/S',
+				'Aromatique et charnu.': 'A/C',
+				'Délicat et léger.': 'D/L',
+				'Fruité et vif.': 'F/V',
+				'Aromatique et rond.': 'A/R',
+				'Fruité et doux.': 'F/D',
+				'Fruité et extra-doux.': 'F/d',
+
+				'Léger et floral.': 'L/F',
+				'Mi-corsé et fruité.': 'c/F',
+				'Mi-corsé et boisé.': 'c/B',
+				'Corsé et complexe.': 'C/C',
+				'Corsé et fumé.': 'C/F'
+			}[sPastille] || '';
+		}
+
 		static htmlEncode(str) {
 			let charMap = {
 				'&': '&amp;',

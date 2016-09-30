@@ -6,14 +6,19 @@
 
 .query-correction, .filter {
 	display: inline-block;
-	border: 1px solid #cfcfcf;
 	padding: 2px 8px;
 	margin: 0 5px;
 	cursor: pointer;
+
+	color: $coveo-blue;
+	font-size: 80%;
+	&:hover {
+		color: $coveo-orange;
+	}
 }
 
 .filters {
-	color: black;
+	color: $plain-text;
 	display: flex;
 	& > div {
 		margin-right: 20px;
@@ -24,7 +29,8 @@
 		height: 16px;
 		line-height: 14px;
 		transform: rotate(45deg);
-		background-color: silver;
+		color: $pastille-text;
+		background-color: $remove;
 		border-radius: 50%;
 		text-align: center;
 		display: inline-block;
@@ -32,7 +38,7 @@
 }
 
 .sort-options {
-	color: black;
+	color: $plain-text;
 	font-size: 12px;
 	float: right;
 	.sort-field {

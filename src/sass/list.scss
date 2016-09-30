@@ -3,36 +3,51 @@
 .list {
 	display: flex;
 	flex-wrap: wrap;
+	background-color: $list-back;
+	justify-content: center;
 }
 
+@keyframes fadein {
+	from {  opacity: 0}
+	to   {  opacity: 1; }
+}
+
+
 .item {
+	&.fade-in {
+		animation: fadein 2s;
+	}
 	transition: width 2s, height 2s, transform 2s;
 
-	border: 1px solid #ccc;
-	width: 300px;
+	border: 1px solid $facet-back;
+	width: 250px;
 	display: inline-block;
 	margin: 5px;
-	padding: 10px;
 
-	padding: 10px 10px 10px 80px;
-	background-position: 8px center;
-	background-size: 66px auto;
+	padding: 10px;
+	background-position: 0 70%;
+	background-size: 100px auto;
 	background-repeat: no-repeat;
 
-	min-height: 100px;
+	min-height: 200px;
 	cursor: normal;
 
 	position: relative;
 
+	color: $item-desc-text;
+
 	.item-name {
 		text-decoration: none;
-		color: inherit;
+		color: $item-name-text;
+	}
+	.item-info {
+		font-size: 80%;
 	}
 	.item-desc {
 		font-size: 80%;
+		margin: 30px 10px 0 90px;
 	}
 	.item-price {
-		color: #000;
 		font-size: 24px;
 		font-family: 'Yatra One', cursive;
 		display: inline-block;
@@ -40,7 +55,7 @@
 
 		.item-price-strike {
 			font-size: 16px;
-			color: red;
+			color: $remove;
 			display: block;
 			text-align: right;
 			text-decoration: line-through;
@@ -49,13 +64,15 @@
 
 	.pastille {
 		background-color: transparent;
-		width: 60px;
-		height: 60px;
-		position: absolute;
-		right: 0;
-		bottom: 0;
-		z-index: -1;
-		border-radius: 100% 0 0;
+		width: 30px;
+		height: 30px;
+		line-height: 30px;
+		text-align: center;
+		border-radius: 50%;
+		display: inline-block;
+		border: 2px solid $saq-border;
+		color: $pastille-text;
+		float: right;
 	}
 }
 
@@ -71,8 +88,12 @@
 			margin-bottom: 0;
 
 			background-size: 36px auto;
+			background-position: 0 center;
 			min-height: 50px;
 			padding-left: 50px;
+		}
+		.item-desc {
+			display: none;
 		}
 	}
 }

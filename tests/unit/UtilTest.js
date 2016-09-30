@@ -13,8 +13,8 @@ define([
 		afterEach: function() {},
 
 		testGetColorForPastille: function(){
-			assert.equal( Util.getColorForPastille('L_ger_et_floral_'), '#fedbac');
-			assert.equal( Util.getColorForPastille('Fruit__et_vif_'), '#f8e622');
+			assert.equal( Util.getColorForPastille('Léger et floral.'), '#fedbac');
+			assert.equal( Util.getColorForPastille('Fruité et vif.'), '#f8e622');
 
 			assert.equal( Util.getColorForPastille('dummy'), null);
 			assert.equal( Util.getColorForPastille(''), null);

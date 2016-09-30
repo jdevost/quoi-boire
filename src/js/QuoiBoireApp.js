@@ -20,6 +20,11 @@ define(['SearchRequest', 'SearchSummary', 'Facets', 'Util'], function(SearchRequ
 			if ( /(\?|&)q=([^?&]+)/.test(window.location.search) ) {
 				this.newSearch( decodeURIComponent(RegExp.$2) );
 			}
+
+
+			window.addEventListener('popstate', e=>{
+				this.newSearch(e.state.q, true);
+			});
 		}
 
 		_setEvent(sId, sEvent, fCallback) {
@@ -44,9 +49,9 @@ define(['SearchRequest', 'SearchSummary', 'Facets', 'Util'], function(SearchRequ
 			return this.searchRequest.getFiltersAndSort();
 		}
 
-		newSearch(searchTerm) {
+		newSearch(searchTerm, skipHistoryState) {
 			Util.$('srch-input').value = searchTerm;
-			this.search();
+			this.search(skipHistoryState);
 		}
 
 		onListScroll() {
@@ -65,25 +70,31 @@ define(['SearchRequest', 'SearchSummary', 'Facets', 'Util'], function(SearchRequ
 			return this._updateSearch('removeFilter', field, value);
 		}
 
+		renderPastille(raw) {
+			let name = raw.tppastilledegout, pastille = Util.getColorForPastille(name);
+			return pastille ? `<div class="pastille" title="${name}" style="background-color: ${pastille};">
+				${Util.getShortNameForPastille(name)}</div>` : '';
+		}
+
 		renderPrice(raw) {
 			return `<div class="item-price"><span class="item-price-strike">${raw.tpprixinitial || ''}</span> ${raw.tpprixrabais || raw.tpprixnormal}</div>`;
 		}
 
 		renderSearchResults(searchResponse) {
-			let items = searchResponse.results.map((item,idx)=> {
+			let items = searchResponse.results.map((item)=> {
 
-				let pastille = Util.getColorForPastille(item.raw.tppastilledegout);
-				pastille = pastille ? `<span class="pastille" style="background-color: ${pastille};">&nbsp;</span>` : '';
-
-				return `<div class="item" id="item${idx}" style="background-image:url(${item.raw.tpthumbnailuri})" title="${item.raw.tpnotededegustation}">
-					${this.renderPrice(item.raw)}
+				return `<div class="item" style="background-image:url(${item.raw.tpthumbnailuri});"">
 					<a href="${item.uri}" class="item-name" target="_blank">${item.title}</a>
-					<div>
+					${this.renderPrice(item.raw)}
+					<div class="item-info">
 						${item.raw.tpproducteur}
 						${item.raw.tpmillesime||''}
 					</div>
-					<div class="item-desc">${item.raw.tpcategorieraw}</div>
-					${pastille}
+					<div class="item-desc">
+						${item.raw.tpcategorieraw}<br>
+						${this.renderPastille(item.raw)}
+						${item.raw.tpnotededegustation || ''}
+					</div>
 				</div>`;
 
 			});
@@ -91,12 +102,15 @@ define(['SearchRequest', 'SearchSummary', 'Facets', 'Util'], function(SearchRequ
 			return items.join('');
 		}
 
-		search() {
+		search(skipHistoryState=false) {
 			var q = Util.$('srch-input').value.trim();
 			if (!q) {
 				return;
 			}
-			history.replaceState({q: q}, 'Search ' + q, '?q=' + q);
+
+			if ( !skipHistoryState ) {
+				history.pushState({q: q}, 'Search ' + q, '?q=' + q);
+			}
 
 			this.searchRequest.newSearch({q: q})
 				.then((response)=>{
@@ -108,7 +122,7 @@ define(['SearchRequest', 'SearchSummary', 'Facets', 'Util'], function(SearchRequ
 		}
 
 		showNextPage(searchResponse) {
-			Util.$('rslt-list').innerHTML += this.renderSearchResults(searchResponse);
+			Util.$('rslt-list').innerHTML += this.renderSearchResults(searchResponse, true);
 		}
 
 		showResults(searchResponse) {

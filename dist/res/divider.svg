@@ -1,0 +1,7 @@
+<svg viewBox="100 200 850 100" xmlns="http://www.w3.org/2000/svg">
+	<g fill="none" fill-rule="evenodd" transform="translate(-1-1)">
+		<path stroke="#004990" stroke-width="15" d="m150 84 h 250" />
+		<path stroke="#004990" stroke-width="15" d="m650 84 h 250" />
+		<path fill="#f58020" d="m140.7 80.1l-140.7 82.1v-161.8l140.7 79.7" transform="matrix(1 0 0-1 460 163.66)" />
+	</g>
+</svg>

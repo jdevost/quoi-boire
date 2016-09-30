@@ -1,7 +1,7 @@
 @import 'variables';
 
 .srch-cntr {
-	background-color: #fff;
+	background-color: $list-back;
 	border: 1px solid $coveo-blue;
 	padding: 0 10px;
 	margin: 5px 0;
@@ -31,8 +31,4 @@
 		width: 32px;
 		height: 100%;
 	}
-}
-
-@media screen and (max-width: 700px) {
-
 }

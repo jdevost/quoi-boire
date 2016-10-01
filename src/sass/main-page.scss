@@ -27,12 +27,12 @@ body {
 	display: flex;
 }
 
-.rslt-cntr {
+.results-container {
 	overflow: auto;
 	flex: 1;
 }
 
-.srch-cntr {
+.search-container {
 	background-color: $list-back;
 	border: 1px solid $coveo-blue;
 	padding: 0 10px;

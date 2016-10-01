@@ -7,15 +7,15 @@ define(['SearchRequest', 'SearchSummary', 'Facets', 'Util'], function(SearchRequ
 			this.searchSummary = new SearchSummary(this);
 			this.facets = new Facets(this);
 
-			this._setEvent('srch-input', 'keypress', e=>{
+			this._setEvent('search-input', 'keypress', e=>{
 				if (e.charCode === 13) {
 					// do search
 					this.search();
 				}
 			});
-			this._setEvent('srch-btn', 'click', this.search.bind(this));
+			this._setEvent('search-button', 'click', this.search.bind(this));
 
-			this._setEvent('rslt-cntr', 'scroll', this.onListScroll.bind(this));
+			this._setEvent('results-container', 'scroll', this.onListScroll.bind(this));
 
 			if ( /(\?|&)q=([^?&]+)/.test(window.location.search) ) {
 				this.newSearch( decodeURIComponent(RegExp.$2) );
@@ -49,12 +49,12 @@ define(['SearchRequest', 'SearchSummary', 'Facets', 'Util'], function(SearchRequ
 		}
 
 		newSearch(searchTerm, skipHistoryState) {
-			Util.$('srch-input').value = searchTerm;
+			Util.$('search-input').value = searchTerm;
 			this.search(skipHistoryState);
 		}
 
 		onListScroll() {
-			var n = Util.$('rslt-cntr');
+			var n = Util.$('results-container');
 			if ( (n.clientHeight + n.scrollTop) >= (n.scrollHeight -50) ) {
 				this.searchRequest.nextPage()
 					.then(response => {
@@ -102,7 +102,7 @@ define(['SearchRequest', 'SearchSummary', 'Facets', 'Util'], function(SearchRequ
 		}
 
 		search(skipHistoryState=false) {
-			var q = Util.$('srch-input').value.trim();
+			var q = Util.$('search-input').value.trim();
 			if (!q) {
 				return;
 			}
@@ -121,12 +121,12 @@ define(['SearchRequest', 'SearchSummary', 'Facets', 'Util'], function(SearchRequ
 		}
 
 		showNextPage(searchResponse) {
-			Util.$('rslt-list').innerHTML += this.renderSearchResults(searchResponse, true);
+			Util.$('results-list').innerHTML += this.renderSearchResults(searchResponse, true);
 		}
 
 		showResults(searchResponse) {
-			Util.$('rslt-cntr').scrollTop = 0;
-			Util.$('rslt-list').innerHTML = this.renderSearchResults(searchResponse);
+			Util.$('results-container').scrollTop = 0;
+			Util.$('results-list').innerHTML = this.renderSearchResults(searchResponse);
 
 			let filtersAndSort = this.getFiltersAndSort();
 			this.searchSummary.show(searchResponse, filtersAndSort);

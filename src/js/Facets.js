@@ -25,7 +25,7 @@ define(['./Facet'], function(Facet) {
 		}
 
 		show(json) {
-			var nContainer = document.getElementById('fct-cntr');
+			var nContainer = document.getElementById('facets-container');
 			nContainer.innerHTML = Facets.render(json);
 
 			// Can't use forEach on a HTMLCollection, do the old for()

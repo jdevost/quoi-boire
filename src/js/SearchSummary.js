@@ -70,7 +70,7 @@ define(['./Util'], function(Util) {
 
 		_setEventHandlers(className, handler) {
 			// Can't use forEach on a HTMLCollection, do the old for()
-			let nodes = document.getElementById('rslt-summary').getElementsByClassName(className);
+			let nodes = document.getElementById('results-summary').getElementsByClassName(className);
 			for (let i=0; i<nodes.length; i++) {
 				// Set up click events on facets
 				nodes[i].addEventListener('click', handler.bind(this));
@@ -78,7 +78,7 @@ define(['./Util'], function(Util) {
 		}
 
 		show(json, filtersAndSort) {
-			let nContainer = document.getElementById('rslt-summary'),
+			let nContainer = document.getElementById('results-summary'),
 				a = [
 					`<div>`,
 					this.renderSort(filtersAndSort.sort),

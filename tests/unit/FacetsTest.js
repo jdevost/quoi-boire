@@ -12,11 +12,11 @@ define([
 		teardown: function() {},
 		beforeEach: function() {
 			let container = document.createElement('div');
-			container.id = 'fct-cntr';
+			container.id = 'facets-container';
 			document.body.appendChild(container);
 		},
 		afterEach: function() {
-			let container = document.getElementById('fct-cntr');
+			let container = document.getElementById('facets-container');
 			container.parentNode.removeChild(container);
 			container = null;
 		},

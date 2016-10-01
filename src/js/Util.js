@@ -1,4 +1,4 @@
-define([], function() {
+define(['./nls/fr'], function(i18nStrings) {
 	'use strict';
 
 	class Util {
@@ -56,6 +56,21 @@ define([], function() {
 			};
 
 			return (str || '').replace(/[<>&"]/g, (m) => charMap[m] );
+		}
+
+		static nls(id, values) {
+			var str = i18nStrings[id];
+			if (str && values) {
+				str = str.replace(/\${([^}]+)}/g, (m,v)=> {
+					// m is full match, v is the first tagged expression
+					return values[v];
+				});
+			}
+			return str || id;
+		}
+
+		static nlsE(id, values) {
+			return Util.htmlEncode(Util.nls(id, values));
 		}
 	}
 

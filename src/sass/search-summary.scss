@@ -28,9 +28,9 @@
 		width: 16px;
 		height: 16px;
 		line-height: 14px;
-		transform: rotate(45deg);
 		color: $pastille-text;
 		background-color: $remove;
+		background-image: url('./res/x.svg');
 		border-radius: 50%;
 		text-align: center;
 		display: inline-block;
@@ -39,15 +39,20 @@
 
 .sort-options {
 	color: $plain-text;
-	font-size: 12px;
+	font-size: 13px;
 	float: right;
 	.sort-field {
 		display: inline-block;
 		margin-right: 10px;
 		cursor: pointer;
 
+		&:hover {
+			color: $coveo-orange;
+		}
 		&.selected {
 			font-weight: bold;
+			color: $coveo-blue;
+			border-bottom: 1px solid $coveo-blue;
 		}
 	}
 }

@@ -16,7 +16,7 @@ define(function() {
 		},
 
 		loaderOptions : {
-			packages : [ 'node' ],
+			packages : [ 'node' ]
 		},
 
 		suites: [

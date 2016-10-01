@@ -3,6 +3,7 @@
 .facets {
 	overflow: auto;
 	background-color: $header-back;
+	min-width: 250px;
 
 	.facet {
 		background-color: $facet-back;
@@ -36,6 +37,7 @@
 
 
 		.facet-pastille {
+			border: 1px solid $saq-border;
 			border-radius: 50%;
 			width: 16px;
 			margin-right: 6px;

@@ -21,7 +21,6 @@ define(['SearchRequest', 'SearchSummary', 'Facets', 'Util'], function(SearchRequ
 				this.newSearch( decodeURIComponent(RegExp.$2) );
 			}
 
-
 			window.addEventListener('popstate', e=>{
 				this.newSearch(e.state.q, true);
 			});
@@ -83,7 +82,7 @@ define(['SearchRequest', 'SearchSummary', 'Facets', 'Util'], function(SearchRequ
 		renderSearchResults(searchResponse) {
 			let items = searchResponse.results.map((item)=> {
 
-				return `<div class="item" style="background-image:url(${item.raw.tpthumbnailuri});"">
+				return `<div class="item" style="background-image:url(${item.raw.tpthumbnailuri});">
 					<a href="${item.uri}" class="item-name" target="_blank">${item.title}</a>
 					${this.renderPrice(item.raw)}
 					<div class="item-info">

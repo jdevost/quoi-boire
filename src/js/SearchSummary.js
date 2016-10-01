@@ -21,14 +21,13 @@ define(['./Util'], function(Util) {
 		renderFilters(filters) {
 			let a = [],
 				renderFilter = (type, value)=>
-					`<div class="filter" data-field="${type}" data-value="${Util.htmlEncode(value)}">
-						${value.replace(/"/g,'')}
-						<div class="filter-remove" data-field="${type}" data-value="${Util.htmlEncode(value)}">+</div>
+					`<div class="filter" data-field="${type}" data-value="${Util.htmlEncode(value)}">${value.replace(/"/g,'')}
+						<div class="filter-remove" data-field="${type}" data-value="${Util.htmlEncode(value)}"></div>
 					</div>`;
 
 			for (var type in filters) {
 				a.push(
-					`<div>${type}: `,
+					`<div>${Util.nlsE(type)}: `,
 					filters[type].map( renderFilter.bind(this,type) ).join(''),
 					`</div>`
 				);
@@ -52,9 +51,9 @@ define(['./Util'], function(Util) {
 
 		renderSort(sortInfo) {
 			return `<div class="sort-options">
-					${this.renderSortButton(sortInfo, '@tpprixnum', 'Price')}
-					${this.renderSortButton(sortInfo, '@tpmillesime', 'Vintage')}
-					${this.renderSortButton(sortInfo, 'relevancy', 'Relevance')}
+					${this.renderSortButton(sortInfo, '@tpprixnum', Util.nlsE('sortby_price') )}
+					${this.renderSortButton(sortInfo, '@tpmillesime', Util.nlsE('sortby_vintage'))}
+					${this.renderSortButton(sortInfo, 'relevancy', Util.nlsE('sortby_relevance'))}
 				</div>`;
 		}
 
@@ -66,7 +65,7 @@ define(['./Util'], function(Util) {
 			else if (sortInfo.field === field) {
 				upOrDown = (sortInfo.order === 'ascending' ? '&and;' : '&or;');
 			}
-			return `<div class="sort-field ${(sortInfo.field === field ? 'selected':'')}" data-field="${field}" title="Sort by ${name}">${name} ${upOrDown}</div>`;
+			return `<div class="sort-field ${(sortInfo.field === field ? 'selected':'')}" data-field="${field}">${name} ${upOrDown}</div>`;
 		}
 
 		_setEventHandlers(className, handler) {
@@ -83,7 +82,8 @@ define(['./Util'], function(Util) {
 				a = [
 					`<div>`,
 					this.renderSort(filtersAndSort.sort),
-					`Found <b>${json.totalCount}</b> in ${json.duration/1000} seconds.</div>`,
+					Util.nlsE('searchFound', {total: json.totalCount, time: json.duration/1000}),
+					'</div>',
 					this.renderFilters(filtersAndSort.filters),
 					this.renderQueryCorrection(json)
 				];

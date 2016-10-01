@@ -42,7 +42,7 @@ define(['./Util'], function(Util) {
 			});
 
 			return `<div class="facet" data-lookup="${json.field}">
-				<div class="facet-label">${json.field}</div>
+				<div class="facet-label">${Util.nlsE(json.field)}</div>
 				${values.join('')}
 			</div>`;
 		}

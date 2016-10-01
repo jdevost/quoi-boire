@@ -75,7 +75,7 @@ define(['./Ajax'], function(Ajax) {
 			json.generateAutomaticRanges = true;
 			json.groupBy = [
 				{field: '@tpcategorie', sortCriteria: 'AlphaAscending'},
-				{field: '@tpformat', sortCriteria: 'AlphaAscending'},
+				// {field: '@tpformat', sortCriteria: 'AlphaAscending'},
 				{field: '@tppays', sortCriteria: 'AlphaAscending'},
 				{field: '@tpprixbande', sortCriteria: 'AlphaAscending'},
 				{field: '@tppastilledegout', sortCriteria: 'AlphaAscending'},

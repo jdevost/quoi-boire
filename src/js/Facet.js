@@ -38,12 +38,12 @@ define(['./Util'], function(Util) {
 
 			let values = json.values.map(v=>{
 				var pastille = v.pastille ? `<span class="facet-pastille" style="background-color: ${v.pastille};">&nbsp;</span>` : '';
-				return `<div class="facet-value" data-lookup="${v.LookupValue}">${pastille}${v.value} (${v.numberOfResults})</div>`;
+				return `<div class="facet-value" data-field="${json.field}" data-value="${v.LookupValue}">${pastille}${v.value} (${v.numberOfResults})</div>`;
 			});
 
-			return `<div class="facet" data-lookup="${json.field}">
+			return `<div class="facet" tabIndex="1">
 				<div class="facet-label">${Util.nlsE(json.field)}</div>
-				${values.join('')}
+				<div class="facet-values">${values.join('')}</div>
 			</div>`;
 		}
 	}

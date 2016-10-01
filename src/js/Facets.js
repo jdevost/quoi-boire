@@ -17,8 +17,8 @@ define(['./Facet'], function(Facet) {
 		onClick(e) {
 			let nTarget = e.target;
 			if (nTarget.className === 'facet-value') {
-				let value = nTarget.getAttribute('data-lookup'),
-					field = nTarget.parentNode.getAttribute('data-lookup');
+				let value = nTarget.getAttribute('data-value'),
+					field = nTarget.getAttribute('data-field');
 
 				this._searchHandler.addFilter(field, value);
 			}

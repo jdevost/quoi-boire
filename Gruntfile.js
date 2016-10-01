@@ -28,7 +28,7 @@ module.exports = function(grunt) {
 
 		watch: {
 			js: {
-				files: ['./src/**/*.js'],
+				files: ['./src/**/*.js', './tests/unit/mocks/*.js'],
 				tasks: ['webpack'],
 				options: {
 					livereload: true
@@ -122,7 +122,7 @@ module.exports = function(grunt) {
 				],
 				resolve: {
 					extensions: ['', '.js', '.jsx'],
-					modulesDirectories: ['./src/js']
+					modulesDirectories: ['./src/js', './tests/unit/mocks']
 				},
 				stats: {
 					// Configure the console output

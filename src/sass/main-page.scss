@@ -32,39 +32,12 @@ body {
 	flex: 1;
 }
 
-.search-container {
-	background-color: $list-back;
-	border: 1px solid $coveo-blue;
-	padding: 0 10px;
-	margin: 5px 0;
-	line-height: 40px;
-	height: 40px;
-	position: relative;
-	width: 70%;
-
-	input {
-		width: 100%;
-		margin: 0;
-		padding: 2px 26px 2px 8px;
-		background: transparent;
-		border: 0;
-		font-size: 18px;
-		line-height: 36px;
-		outline: none;
-	}
-	.btn {
-		cursor: pointer;
-		background-image: url(./res/search.svg);
-		background-repeat: no-repeat;
-		background-size: 24px 24px;
-		background-position: center center;
-
-		position: absolute;
-		right: 0;
-		width: 32px;
-		height: 100%;
-	}
-}
 
 @media screen and (max-width: 700px) {
+	.bottom {
+		flex-direction: column;
+	}
+	.header {
+		padding: 10px 30px 0 140px;
+	}
 }

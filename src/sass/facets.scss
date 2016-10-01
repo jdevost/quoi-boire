@@ -5,6 +5,10 @@
 	background-color: $header-back;
 	min-width: 250px;
 
+	.facet-values {
+		background-color: $header-back;
+	}
+
 	.facet {
 		background-color: $facet-back;
 		background-image: url('./res/divider.svg');
@@ -48,6 +52,34 @@
 
 @media screen and (max-width: 700px) {
 	.facets {
-		display: none;
+		overflow: visible;
+
+		.facet-value {
+			display: none;
+		}
+		.facet {
+			display: inline-block;
+			background-image: none;
+			padding: 0 10px;
+
+			.facet-label {
+				background-image: url('./res/down.svg');
+				background-position: right center;
+				background-repeat: no-repeat;
+				background-size: 16px;
+				padding-right: 24px;
+			}
+
+			&:focus {
+				.facet-values {
+					position: absolute;
+					z-index: 2;
+				}
+				.facet-value {
+					display: block;
+				}
+			}
+		}
+
 	}
 }

@@ -1,4 +1,5 @@
 define({
+	didYouMean: 'Essayez avec cette orthographe: ',
 	tpcategorie: 'Catégorie',
 	tpcagetories: 'Catégories',
 	tpenspecial: 'En spécial',

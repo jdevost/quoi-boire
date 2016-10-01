@@ -18,6 +18,17 @@ define(['./Util'], function(Util) {
 			this._searchHandler.newSearch( e.target.getAttribute('data-lookup') );
 		}
 
+		render(json, filtersAndSort) {
+			return [
+				`<div>`,
+				this.renderSort(filtersAndSort.sort),
+				Util.nlsE('searchFound', {total: json.totalCount, time: json.duration/1000}),
+				'</div>',
+				this.renderFilters(filtersAndSort.filters),
+				this.renderQueryCorrection(json)
+			].join('');
+		}
+
 		renderFilters(filters) {
 			let a = [],
 				renderFilter = (type, value)=>
@@ -39,7 +50,7 @@ define(['./Util'], function(Util) {
 			let a = [];
 			if (json.queryCorrections.length) {
 				a.push(
-					'<div class="query-corrections">Did you mean? ',
+					`<div class="query-corrections">${Util.nlsE('didYouMean')} `,
 					json.queryCorrections.map(o => {
 						return `<div class="query-correction" data-lookup="${o.correctedQuery}">${o.correctedQuery}</div>`;
 					}),
@@ -78,17 +89,9 @@ define(['./Util'], function(Util) {
 		}
 
 		show(json, filtersAndSort) {
-			let nContainer = document.getElementById('results-summary'),
-				a = [
-					`<div>`,
-					this.renderSort(filtersAndSort.sort),
-					Util.nlsE('searchFound', {total: json.totalCount, time: json.duration/1000}),
-					'</div>',
-					this.renderFilters(filtersAndSort.filters),
-					this.renderQueryCorrection(json)
-				];
+			let nContainer = document.getElementById('results-summary');
 
-			nContainer.innerHTML = a.join('');
+			nContainer.innerHTML = this.render(json, filtersAndSort);
 
 			this._setEventHandlers('query-correction', this.onUseQueryConnection);
 			this._setEventHandlers('filter', this.onRemoveFilter);

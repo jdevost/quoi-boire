@@ -7,6 +7,10 @@ define(['./nls/fr'], function(i18nStrings) {
 			return document.getElementById(id);
 		}
 
+		static addEvent(sId, sEvent, fCallback) {
+			Util.$(sId).addEventListener(sEvent, fCallback);
+		}
+
 		static getColorForPastille(sPastille) {
 			return {
 				'Fruité et léger.': '#e9c5dd',

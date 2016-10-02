@@ -58,8 +58,10 @@
 	.facets {
 		overflow: visible;
 
-		.facet-value {
+		.facet-values {
 			display: none;
+			position: absolute;
+			z-index: 2;
 		}
 		.facet {
 			display: inline-block;
@@ -76,10 +78,6 @@
 
 			&:focus {
 				.facet-values {
-					position: absolute;
-					z-index: 2;
-				}
-				.facet-value {
 					display: block;
 				}
 			}

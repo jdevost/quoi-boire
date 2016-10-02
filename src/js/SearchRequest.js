@@ -67,18 +67,17 @@ define(['./Ajax'], function(Ajax) {
 			this.reset();
 
 			json.searchHub = 'default';
-			json.language = 'en';
 			json.pipeline = 'default';
 			json.enableDidYouMean = true;
 			json.numberOfResults = this._PAGE_LENGTH;
 			json.firstResult = this._firstResult;
 			json.generateAutomaticRanges = true;
 			json.groupBy = [
-				{field: '@tpcategorie', sortCriteria: 'AlphaAscending'},
+				{field: '@tppastilledegout', sortCriteria: 'AlphaAscending', maximumNumberOfValues: 300},
+				{field: '@tpcategorie', sortCriteria: 'Occurences'},
 				// {field: '@tpformat', sortCriteria: 'AlphaAscending'},
-				{field: '@tppays', sortCriteria: 'AlphaAscending'},
+				{field: '@tppays', sortCriteria: 'Occurences'},
 				{field: '@tpprixbande', sortCriteria: 'AlphaAscending'},
-				{field: '@tppastilledegout', sortCriteria: 'AlphaAscending'},
 				{field: '@tpenspecial', sortCriteria: 'AlphaAscending'}
 			];
 
@@ -102,7 +101,9 @@ define(['./Ajax'], function(Ajax) {
 
 		removeFilter(field, value) {
 			if (this._filters[field]) {
-				this._filters[field] = this._filters[field].filter( v=>v!==value );
+				this._filters[field] = this._filters[field].filter(
+					v=> v.replace(/^"|"$/g,'') !== value.replace(/^"|"$/g,'')
+				);
 				if (this._filters[field].length < 1) {
 					delete this._filters[field];
 				}
@@ -132,6 +133,7 @@ define(['./Ajax'], function(Ajax) {
 
 		updateSearch() {
 			let filters = this.getQueryForFilters();
+
 			this._json.aq = filters;
 			this._json.sortCriteria = [this._sort.field, this._sort.order].join(' ').trim();
 

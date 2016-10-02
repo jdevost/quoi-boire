@@ -23,8 +23,7 @@ define(['./Util'], function(Util) {
 			});
 		}
 
-		static render(json) {
-
+		static render(json, filterValues) {
 			if (json.field === 'tpprixbande') {
 				json.values = this._sortPrixBande(json.values);
 			}
@@ -38,7 +37,15 @@ define(['./Util'], function(Util) {
 
 			let values = json.values.map(v=>{
 				var pastille = v.pastille ? `<span class="facet-pastille" style="background-color: ${v.pastille};">&nbsp;</span>` : '';
-				return `<div class="facet-value" data-field="${json.field}" data-value="${v.LookupValue}">${pastille}${v.value} (${v.numberOfResults})</div>`;
+
+				var checked = (filterValues || []).find( filterValue =>
+					filterValue.replace(/^"|"$/g,'') === v.LookupValue
+				) ? 'checked' : '';
+
+				return `<label class="facet-value" data-field="${json.field}" data-value="${v.LookupValue}">
+						<input type="checkbox" ${checked}>
+						${pastille}${Util.nls(v.value)}<span class="nb"> (${v.numberOfResults})</span>
+					</label>`;
 			});
 
 			return `<div class="facet" tabIndex="1">

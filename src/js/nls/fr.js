@@ -2,7 +2,8 @@ define({
 	didYouMean: 'Essayez avec cette orthographe: ',
 	tpcategorie: 'Catégorie',
 	tpcagetories: 'Catégories',
-	tpenspecial: 'En spécial',
+	tpenspecial: 'En spécial?',
+	tpfamilledevinsplitgroup: 'Famille de vin',
 	tpformat: 'Format',
 	tppastilledegout: 'Pastille',
 	tppays: 'Pays',
@@ -13,6 +14,8 @@ define({
 	sortby_price: 'Prix',
 	sortby_vintage: 'Millésime',
 	sortby_relevance: 'Pertinence',
+
+	true: 'Oui', // tpenspecial = true
 
 	_: ''
 });

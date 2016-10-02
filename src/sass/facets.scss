@@ -27,11 +27,15 @@
 		}
 
 		.facet-value {
+			display: block;
 			border-radius: 5px;
 			padding: 3px 10px;
 			font-size: 80%;
 			white-space: nowrap;
 			cursor: pointer;
+
+			overflow: hidden;
+			text-overflow: ellipsis;
 
 			&:hover {
 				color: $facet-text-hover;
@@ -81,5 +85,44 @@
 			}
 		}
 
+	}
+}
+
+body.search {
+	.facet-value {
+		input {
+			display: none;
+		}
+	}
+}
+
+body.explore {
+	// .results-summary {
+	// 	display: none;
+	// }
+	.facets {
+		display: flex;
+		width: 100%;
+
+		.facet {
+			padding-top: 0;
+			background-image: none;
+			margin: 0;
+			flex: 1;
+
+			border-right: 1px solid $coveo-blue;
+			&:last-child {
+				border-right: none;
+			}
+
+
+			.facet-value > .nb {
+				// display: none;
+			}
+		}
+	}
+	.facet-values {
+		max-height: 200px;
+		overflow: auto;
 	}
 }

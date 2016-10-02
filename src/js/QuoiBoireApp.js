@@ -1,4 +1,4 @@
-define(['SearchRequest', 'SearchSummary', 'ResultsList', 'Facets', 'Util'], function(SearchRequest, SearchSummary, ResultsList, Facets, Util) {
+define(['SearchRequest', 'SearchSummary', 'ResultsList', 'Facets', 'Explorer', 'Util'], function(SearchRequest, SearchSummary, ResultsList, Facets, Explorer, Util) {
 	'use strict';
 
 	class QuoiBoireApp {
@@ -8,13 +8,20 @@ define(['SearchRequest', 'SearchSummary', 'ResultsList', 'Facets', 'Util'], func
 			this.searchSummary = new SearchSummary(this);
 			this.facets = new Facets(this);
 
-			Util.addEvent('search-input', 'keypress', e=>{
-				if (e.charCode === 13) {
-					// do search
-					this.search();
-				}
-			});
-			Util.addEvent('search-button', 'click', this.search.bind(this));
+			if (Util.$('search-input')) {
+				// search mode
+				Util.addEvent('search-input', 'keypress', e=>{
+					if (e.charCode === 13) {
+						// do search
+						this.search();
+					}
+				});
+				Util.addEvent('search-button', 'click', this.search.bind(this));
+			}
+			else {
+				// explore mode
+				this.explorer = new Explorer();
+			}
 
 			if ( /(\?|&)q=([^?&]+)/.test(window.location.search) ) {
 				this.newSearch( decodeURIComponent(RegExp.$2) );

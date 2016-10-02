@@ -7,26 +7,34 @@ define(['./Facet'], function(Facet) {
 			this._searchHandler = searchHandler;
 		}
 
-		static render(json) {
+		onClick(e) {
+			let nTarget = e.target;
+			// make sure we got the right target for the click using the class name
+			// Useful if user clicks on a subnode, like <span class="nb">
+			while(nTarget && nTarget.className !== 'facet-value') {
+				nTarget = nTarget.parentNode;
+			}
+			if (nTarget && nTarget.className === 'facet-value') {
+				let value = nTarget.getAttribute('data-value'),
+					field = nTarget.getAttribute('data-field');
+
+				this._searchHandler.addFilter(field, value);
+			}
+			e.stopPropagation();
+			e.preventDefault();
+			return true;
+		}
+
+		render(json) {
 			let facets = json.groupByResults.map( o=> {
 				return Facet.render(o);
 			});
 			return facets.join('');
 		}
 
-		onClick(e) {
-			let nTarget = e.target;
-			if (nTarget.className === 'facet-value') {
-				let value = nTarget.getAttribute('data-value'),
-					field = nTarget.getAttribute('data-field');
-
-				this._searchHandler.addFilter(field, value);
-			}
-		}
-
 		show(json) {
 			var nContainer = document.getElementById('facets-container');
-			nContainer.innerHTML = Facets.render(json);
+			nContainer.innerHTML = this.render(json);
 
 			// Can't use forEach on a HTMLCollection, do the old for()
 			let aFacets = nContainer.getElementsByClassName('facet');

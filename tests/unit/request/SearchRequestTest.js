@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'src/js/SearchRequest',
+	'src/js/request/SearchRequest',
 	'intern'
 ], function(registerSuite, assert, SearchRequest, intern) {
 	'use strict';

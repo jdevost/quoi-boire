@@ -54,23 +54,23 @@ module.exports = function(grunt) {
 			}
 		},
 
-		babel: {
-			options: {
-				sourceMap: true,
-				presets: ['es2015']
-			},
-			dist: {
-				files: {
-					'dist/Ajax.js': 'src/js/Ajax.js',
-					'dist/Facet.js': 'src/js/Facet.js',
-					'dist/Facets.js': 'src/js/Facets.js',
-					'dist/QuoiBoireApp.js': 'src/js/QuoiBoireApp.js',
-					'dist/SearchRequest.js': 'src/js/SearchRequest.js',
-					'dist/SearchSummary.js': 'src/js/SearchSummary.js',
-					'dist/Util.js': 'src/js/Util.js'
-				}
-			}
-		},
+		// babel: {
+		// 	options: {
+		// 		sourceMap: true,
+		// 		presets: ['es2015']
+		// 	},
+		// 	dist: {
+		// 		files: {
+		// 			'dist/Ajax.js': 'src/js/Ajax.js',
+		// 			'dist/Facet.js': 'src/js/Facet.js',
+		// 			'dist/Facets.js': 'src/js/Facets.js',
+		// 			'dist/QuoiBoireApp.js': 'src/js/QuoiBoireApp.js',
+		// 			'dist/SearchRequest.js': 'src/js/SearchRequest.js',
+		// 			'dist/SearchSummary.js': 'src/js/SearchSummary.js',
+		// 			'dist/Util.js': 'src/js/Util.js'
+		// 		}
+		// 	}
+		// },
 
 		jshint: {
 			all: [
@@ -106,7 +106,7 @@ module.exports = function(grunt) {
 		webpack: {
 			coveoChallenge: {
 				// webpack options
-				entry: './src/js/QuoiBoireApp.js',
+				entry: './src/js/SearchController.js',
 				output: {
 					path: './dist/',
 					filename: 'quoi-boire.js'

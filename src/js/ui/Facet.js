@@ -1,4 +1,4 @@
-define(['./Util'], function(Util) {
+define(['../Util'], function(Util) {
 	'use strict';
 
 	class Facet {
@@ -42,10 +42,9 @@ define(['./Util'], function(Util) {
 					filterValue.replace(/^"|"$/g,'') === v.LookupValue
 				) ? 'checked' : '';
 
-				return `<label class="facet-value" data-field="${json.field}" data-value="${v.LookupValue}">
-						<input type="checkbox" ${checked}>
-						${pastille}${Util.nls(v.value)}<span class="nb"> (${v.numberOfResults})</span>
-					</label>`;
+				return `<label class="facet-value" data-field="${json.field}" data-value="${v.LookupValue}">`+
+					`<input type="checkbox" ${checked}>`+
+					`${pastille}${Util.nls(v.value)}<span class="nb"> (${v.numberOfResults})</span></label>`;
 			});
 
 			return `<div class="facet" tabIndex="1">

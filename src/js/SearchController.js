@@ -1,4 +1,4 @@
-define(['SearchRequest', 'SearchSummary', 'ResultsList', 'Facets', 'Explorer', 'Util'], function(SearchRequest, SearchSummary, ResultsList, Facets, Explorer, Util) {
+define(['./request/SearchRequest', './ui/SearchSummary', './ui/ResultsList', './ui/Facets', './ExploreController', './Util'], function(SearchRequest, SearchSummary, ResultsList, Facets, ExploreController, Util) {
 	'use strict';
 
 	class QuoiBoireApp {
@@ -20,7 +20,7 @@ define(['SearchRequest', 'SearchSummary', 'ResultsList', 'Facets', 'Explorer', '
 			}
 			else {
 				// explore mode
-				this.explorer = new Explorer();
+				this.exploreController = new ExploreController();
 			}
 
 			if ( /(\?|&)q=([^?&]+)/.test(window.location.search) ) {

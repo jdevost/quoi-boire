@@ -1,4 +1,4 @@
-define(['./SearchRequest', 'SearchSummary', 'ResultsList', './Facet', './Util'], function(SearchRequest, SearchSummary, ResultsList, Facet, Util) {
+define(['./request/SearchRequest', './ui/SearchSummary', './ui/ResultsList', './ui/Facet', './Util'], function(SearchRequest, SearchSummary, ResultsList, Facet, Util) {
 	'use strict';
 	let DEPTH_LIMIT = 12000;
 

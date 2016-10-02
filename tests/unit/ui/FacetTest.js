@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'src/js/Facet'
+	'src/js/ui/Facet'
 ], function(registerSuite, assert, Facet) {
 	'use strict';
 	//jshint -W109

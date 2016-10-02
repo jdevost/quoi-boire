@@ -1,7 +1,7 @@
 define([
-	'./FacetTest',
-	'./FacetsTest',
-	'./ResultsListTest',
-	'./SearchRequestTest',
+	'./ui/FacetTest',
+	'./ui/FacetsTest',
+	'./ui/ResultsListTest',
+	'./request/SearchRequestTest',
 	'./UtilTest'
 ], function () {});

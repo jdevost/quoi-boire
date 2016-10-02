@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'src/js/ResultsList',
+	'src/js/ui/ResultsList',
 	'tests/unit/mocks/list1'
 ], function(registerSuite, assert, ResultsList, List1) {
 	'use strict';

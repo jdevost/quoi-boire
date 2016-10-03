@@ -1,7 +1,17 @@
 @import 'variables';
 
 .results-summary {
-	margin: 5px;
+	padding: 5px;
+	background-color: $list-back;
+	&:empty {
+		display:none
+	}
+}
+
+.query-corrections {
+	padding: 20px;
+	color: $plain-text;
+
 }
 
 .query-correction, .filter {
@@ -11,10 +21,17 @@
 	cursor: pointer;
 
 	color: $coveo-blue;
-	font-size: 80%;
 	&:hover {
 		color: $coveo-orange;
 	}
+}
+
+.query-correction {
+	font-size: 120%;
+}
+
+.filter {
+	font-size: 80%;
 }
 
 .filters {

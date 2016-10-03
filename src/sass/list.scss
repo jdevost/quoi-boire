@@ -5,6 +5,10 @@
 	flex-wrap: wrap;
 	background-color: $list-back;
 	justify-content: center;
+
+	&:empty {
+		display:none
+	}
 }
 
 @keyframes fadein {

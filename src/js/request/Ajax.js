@@ -7,9 +7,10 @@ define([], function() {
 	 */
 	class Ajax {
 		constructor() {
-			// The API needs a token, we retrieve it from the cookies.
-			// It is set manually in the cookies from a browser's console, to prevent having to save the token in a public GitHiub.
-			this.token = document.cookie.replace(/(?:(?:^|.*;\s*)coveoToken\s*\=\s*([^;]*).*$)|^.*$/, '$1');
+			// The API needs a token.
+			// Here's a poor man's obfuscation to make it harder to future candidates to find this project by searching code in Github using the token.
+			// Or maybe I'm just paranoid ;-)
+			this.token = '6g3g1g8g1g0g3gbg-gfg9gdgag-g4g3g7gcg-g8g5g4gbg-g9geg6gfg1gfg4g4geg2g7gbg'.replace(/g/g,'');
 		}
 
 		/**

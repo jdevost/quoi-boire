@@ -20,9 +20,3 @@ Alias /quoi-boire [path/to/repository]/dist
 </Directory>
 ```
 Then you will be able to access it from your machine at `http://localhost/quoi-boire`.
-
-### Token required
-To use the Search API, you need a token. You will get an alert if it's not set up. The project expect the token to be stored in your cookies. Once you have accessed your page for the first time, open the Browser Console and add your token to the cookies:
-`document.cookie = "coveoToken=YOUR_TOKEN";`
-
-You also need the token for the unit tests, as follow: `grunt tests --token=YOUR_TOKEN`

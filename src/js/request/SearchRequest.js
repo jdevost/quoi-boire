@@ -2,34 +2,44 @@ define(['./Ajax'], function(Ajax) {
 	'use strict';
 	let SORT_ASC = 'ascending', SORT_DESC = 'descending', SORT_RELEVANCY = 'relevancy';
 
+	/**
+	 * Handles Search requests using Coveo API
+	 * @class
+	 */
 	class SearchRequest extends Ajax {
 
 		constructor() {
 			super();
 			this.reset();
 			this._PAGE_LENGTH = 20;
+			this.queryParameters = {};
 		}
 
-		_sendSearchRequest(json) {
-			return super.post('https://cloudplatform.coveo.com/rest/search', json)
-				.then((response)=>{
-					this._totalCount = response.totalCount;
-					return response;
-				});
-		}
-
+		/**
+		 * Adds a value associated to a field to the filters.
+		 * @param {string} field field to filter
+		 * @param {string} value value to add to filter for the field
+		 * @returns {Promise} Search request's promise
+		 */
 		addFilter(field, value) {
+			// Use quotes around value, to preserve values with spaces in them.
 			value = `"${value}"`;
 			if (this._filters[field]) {
+				// already have a filter for this field, add the value.
 				this._filters[field].push(value);
 			}
 			else {
+				// no filter for this field, add the value using an array (for adding more values later).
 				this._filters[field] = [value];
 			}
 
 			return this.updateSearch();
 		}
 
+		/**
+		 * Returns the current filter and sort info.
+		 * @returns {object} object with 'filter' and 'sort'.
+		 */
 		getFiltersAndSort() {
 			return {
 				filters: this._filters,
@@ -37,6 +47,10 @@ define(['./Ajax'], function(Ajax) {
 			};
 		}
 
+		/**
+		 * Construct the values for Advanced Query parameters (aq) using the current saved filters.
+		 * @returns {string}
+		 */
 		getQueryForFilters() {
 			var advancedQuery = [];
 			for (var f in this._filters) {
@@ -45,15 +59,19 @@ define(['./Ajax'], function(Ajax) {
 			return advancedQuery.join(' AND ');
 		}
 
+		/**
+		 * Get the next set of values, re-using the current filters and query parameters.
+		 * @returns {Promise}
+		 */
 		nextPage() {
 			if (! this._nextPageInProgress) {
 				this._firstResult = this._firstResult + this._PAGE_LENGTH;
 
 				if ( this._firstResult <= this._totalCount ) {
 					this._nextPageInProgress = true;
-					this._json.firstResult = this._firstResult;
+					this.queryParameters.firstResult = this._firstResult;
 
-					return this._sendSearchRequest(this._json)
+					return this.sendSearchRequest(this.queryParameters)
 						.then( response => {
 							this._nextPageInProgress = false;
 							return response;
@@ -63,16 +81,21 @@ define(['./Ajax'], function(Ajax) {
 			return Promise.resolve();
 		}
 
-		newSearch(json) {
+		/**
+		 * Starts a new search. Reset current filters, sort and paging.
+		 * @param {object} queryParameters Initial value for the query. Such as the search term.
+		 * @returns {Promise} Search request's promise
+		 */
+		newSearch(queryParameters) {
 			this.reset();
 
-			json.searchHub = 'default';
-			json.pipeline = 'default';
-			json.enableDidYouMean = true;
-			json.numberOfResults = this._PAGE_LENGTH;
-			json.firstResult = this._firstResult;
-			json.generateAutomaticRanges = true;
-			json.groupBy = [
+			queryParameters.searchHub = 'default';
+			queryParameters.pipeline = 'default';
+			queryParameters.enableDidYouMean = true;
+			queryParameters.numberOfResults = this._PAGE_LENGTH;
+			queryParameters.firstResult = this._firstResult;
+			queryParameters.generateAutomaticRanges = true;
+			queryParameters.groupBy = [
 				{field: '@tppastilledegout', sortCriteria: 'AlphaAscending', maximumNumberOfValues: 300},
 				{field: '@tpcategorie', sortCriteria: 'Occurences'},
 				// {field: '@tpformat', sortCriteria: 'AlphaAscending'},
@@ -81,9 +104,9 @@ define(['./Ajax'], function(Ajax) {
 				{field: '@tpenspecial', sortCriteria: 'AlphaAscending'}
 			];
 
-			json.sortCriteria = [this._sort.field, this._sort.order].join(' ').trim();
+			queryParameters.sortCriteria = [this._sort.field, this._sort.order].join(' ').trim();
 
-			json.fieldsToExclude = [
+			queryParameters.fieldsToExclude = [
 				'excerpt', 'Excerpt',
 				'sysconcepts',
 				'tpcoteexpertraw',
@@ -94,16 +117,25 @@ define(['./Ajax'], function(Ajax) {
 				'tppagebody'
 			];
 
-			this._json = json;
+			this.queryParameters = queryParameters;
 
-			return this._sendSearchRequest(json);
+			return this.sendSearchRequest(queryParameters);
 		}
 
+		/**
+		 * Removes a value associated to a field from the filters.
+		 * @param {string} field field to filter
+		 * @param {string} value value to remove from filter for the field
+		 * @returns {Promise} Search request's promise
+		 */
 		removeFilter(field, value) {
 			if (this._filters[field]) {
+				// filter out the value from this._filters[field]
 				this._filters[field] = this._filters[field].filter(
+					// clear out the quotes around the values before compare
 					v=> v.replace(/^"|"$/g,'') !== value.replace(/^"|"$/g,'')
 				);
+				// if we remove the last value, we removed the field from the filters.
 				if (this._filters[field].length < 1) {
 					delete this._filters[field];
 				}
@@ -111,12 +143,37 @@ define(['./Ajax'], function(Ajax) {
 			return this.updateSearch();
 		}
 
+		/**
+		 * Resets filter, pagination and sort.
+		 */
 		reset() {
 			this._filters = {};
 			this._firstResult = 0;
 			this._sort = { field: SORT_RELEVANCY, order: '' };
 		}
 
+
+		/**
+		 * Send an ajax request to the REST API.
+		 * @param {object} queryParameters Query parameters for this requests (filters, sort, groupBy).
+		 * @returns {Promise}
+		 */
+		sendSearchRequest(queryParameters) {
+			return super.post('https://cloudplatform.coveo.com/rest/search', queryParameters)
+				.then((response)=>{
+					this._totalCount = response.totalCount;
+					return response;
+				});
+		}
+
+		/**
+		 * Sort results based on a field.
+		 * If current sort is based on a different field, we change the sort field to the new field and use order ascending.
+		 * If current sort is based on the same field, we toggle between ascending and descending.
+		 * Exception, if new sort field is SORT_RELEVANCY, there's no sort order.
+		 * @param {string} field
+		 * @param {Promise}
+		 */
 		sort(field) {
 			if (field === SORT_RELEVANCY) {
 				this._sort = {field: SORT_RELEVANCY, order: ''};
@@ -131,15 +188,18 @@ define(['./Ajax'], function(Ajax) {
 			return this.updateSearch();
 		}
 
+		/**
+		 * Updates query parameters and fire off a search request.
+		 * @param {Promise} Search request's promise
+		 */
 		updateSearch() {
 			let filters = this.getQueryForFilters();
 
-			this._json.aq = filters;
-			this._json.sortCriteria = [this._sort.field, this._sort.order].join(' ').trim();
+			this.queryParameters.aq = filters;
+			this.queryParameters.sortCriteria = [this._sort.field, this._sort.order].join(' ').trim();
+ 			this.queryParameters.firstResult = this._firstResult = 0;
 
- 			this._json.firstResult = this._firstResult = 0;
-
-			return this._sendSearchRequest(this._json);
+			return this.sendSearchRequest(this.queryParameters);
 		}
 	}
 

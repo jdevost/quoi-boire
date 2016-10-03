@@ -1,27 +1,29 @@
-define(['./request/SearchRequest', './ui/SearchSummary', './ui/ResultsList', './ui/Facets', './ExploreController', './Util'], function(SearchRequest, SearchSummary, ResultsList, Facets, ExploreController, Util) {
+define(['./request/SearchRequest', './ui/SearchSummary', './ui/ResultsList', './ui/Facets', './Util'], function(SearchRequest, SearchSummary, ResultsList, Facets, Util) {
 	'use strict';
 
-	class QuoiBoireApp {
+	/**
+	 * Controller class for the Search scenario
+	 * @class
+	 */
+	class SearchPage {
 		constructor() {
 			this.searchRequest = new SearchRequest();
 			this.resultsList = new ResultsList(this);
 			this.searchSummary = new SearchSummary(this);
 			this.facets = new Facets(this);
 
-			if (Util.$('search-input')) {
-				// search mode
-				Util.addEvent('search-input', 'keypress', e=>{
-					if (e.charCode === 13) {
-						// do search
-						this.search();
-					}
-				});
-				Util.addEvent('search-button', 'click', this.search.bind(this));
-			}
-			else {
-				// explore mode
-				this.exploreController = new ExploreController();
-			}
+			this.init();
+		}
+
+		init() {
+			// search mode
+			Util.addEvent('search-input', 'keypress', e=>{
+				if (e.charCode === 13) {
+					// do search
+					this.search();
+				}
+			});
+			Util.addEvent('search-button', 'click', this.search.bind(this));
 
 			if ( /(\?|&)q=([^?&]+)/.test(window.location.search) ) {
 				this.newSearch( decodeURIComponent(RegExp.$2) );
@@ -32,10 +34,14 @@ define(['./request/SearchRequest', './ui/SearchSummary', './ui/ResultsList', './
 			});
 		}
 
+		/**
+		 * Sends a Search Request and update UI when results are back
+		 */
 		_updateSearch(action, field, value) {
 			return this.searchRequest[action](field, value)
 				.then((response)=>{
 					this.showResults(response);
+					return response;
 				})
 				.catch(
 					(error)=>{console.warn(error);}
@@ -63,6 +69,9 @@ define(['./request/SearchRequest', './ui/SearchSummary', './ui/ResultsList', './
 			return this._updateSearch('removeFilter', field, value);
 		}
 
+		/**
+		 * Handler when doing a search from the Input bar
+		 */
 		search(skipHistoryState=false) {
 			var q = Util.$('search-input').value.trim();
 			if (!q) {
@@ -96,6 +105,6 @@ define(['./request/SearchRequest', './ui/SearchSummary', './ui/ResultsList', './
 
 	}
 
-	return new QuoiBoireApp();
+	return SearchPage;
 
 });

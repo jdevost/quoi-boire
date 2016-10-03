@@ -55,7 +55,7 @@ define([
 			assert.equal( nFacet.textContent, 'Argentine (18)' );
 
 			return new Promise(resolve=> {
-				facets._searchHandler = {
+				facets._pageHandler = {
 					addFilter: (field, value)=>{
 						assert.equal( field, 'tppays' );
 						assert.equal( value, 'Argentine' );

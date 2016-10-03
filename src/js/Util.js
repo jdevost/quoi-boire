@@ -3,14 +3,28 @@ define(['./nls/fr'], function(i18nStrings) {
 
 	class Util {
 
+		/**
+		 * Helper function to get a DOM node from an id.
+		 * @param {string} id for DOM node to find.
+		 * @returns {DOMNode}
+		 */
 		static $(id){
 			return document.getElementById(id);
 		}
 
-		static addEvent(sId, sEvent, fCallback) {
-			Util.$(sId).addEventListener(sEvent, fCallback);
+		/**
+		 * Helper function to attach an event to a dom node
+		 * @param {string} id for DOM node to find.
+		 * @param {string} sEvent name of the event.
+		 * @param {string} fCallback function to call for this event.
+		 */
+		static addEvent(id, sEvent, fCallback) {
+			Util.$(id).addEventListener(sEvent, fCallback);
 		}
 
+		/**
+		 * Translate a pastille name to its color
+		 */
 		static getColorForPastille(sPastille) {
 			return {
 				'Fruité et léger.': '#e9c5dd',
@@ -31,6 +45,9 @@ define(['./nls/fr'], function(i18nStrings) {
 			}[sPastille] || null;
 		}
 
+		/**
+		 * Translate a pastille name to its abbreviation
+		 */
 		static getShortNameForPastille(sPastille) {
 			return {
 				'Fruité et léger.': 'F/L',
@@ -51,6 +68,11 @@ define(['./nls/fr'], function(i18nStrings) {
 			}[sPastille] || '';
 		}
 
+		/**
+		 * Encodes Html characters from a string.
+		 * @param {string} str string to encode
+		 * @returns {string} HTML-escaped string
+		 */
 		static htmlEncode(str) {
 			let charMap = {
 				'&': '&amp;',
@@ -62,6 +84,12 @@ define(['./nls/fr'], function(i18nStrings) {
 			return (str || '').replace(/[<>&"]/g, (m) => charMap[m] );
 		}
 
+		/**
+		 * Gets a translated string for an id. Can use parameters in the strings.
+		 * @param {string} id string key to use in the translation file
+		 * @param {object} values object with the values for parameterized strings
+		 * @returns {string}
+		 */
 		static nls(id, values) {
 			var str = i18nStrings[id];
 			if (str && values) {
@@ -73,6 +101,12 @@ define(['./nls/fr'], function(i18nStrings) {
 			return str || id;
 		}
 
+		/**
+		 * shortcut to get translation (nls) and encode (htmlEncode)
+		 * @param {string} id string key to use in the translation file
+		 * @param {object} values object with the values for parameterized strings
+		 * @returns {string}
+		 */
 		static nlsE(id, values) {
 			return Util.htmlEncode(Util.nls(id, values));
 		}

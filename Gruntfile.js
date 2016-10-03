@@ -106,7 +106,7 @@ module.exports = function(grunt) {
 		webpack: {
 			coveoChallenge: {
 				// webpack options
-				entry: './src/js/SearchController.js',
+				entry: './src/js/QuoiBoireApp.js',
 				output: {
 					path: './dist/',
 					filename: 'quoi-boire.js'

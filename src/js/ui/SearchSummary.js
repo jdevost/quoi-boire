@@ -1,34 +1,60 @@
 define(['../Util'], function(Util) {
 	'use strict';
 
+	/**
+	 * UI Class to show selected values from the facets, the sort options and the suggested corrections.
+	 * @class
+	 */
 	class SearchSummary {
-		constructor(searchHandler) {
-			this._searchHandler = searchHandler;
+		constructor(pageHandler) {
+			this._pageHandler = pageHandler;
 		}
 
+		/**
+		 * Handler when user clicks to remove a facet filter.
+		 * @param {event} e mouse click event
+		 */
 		onRemoveFilter(e) {
-			this._searchHandler.removeFilter( e.target.getAttribute('data-field'), e.target.getAttribute('data-value') );
+			this._pageHandler.removeFilter( e.target.getAttribute('data-field'), e.target.getAttribute('data-value') );
 		}
 
+		/**
+		 * Handler when user change the sort options.
+		 * @param {event} e mouse click event
+		 */
 		onSort(e) {
-			this._searchHandler.sort( e.target.getAttribute('data-field') );
+			this._pageHandler.sort( e.target.getAttribute('data-field') );
 		}
 
+		/**
+		 * Handler when user clicks on a suggested term
+		 * @param {event} e mouse click event
+		 */
 		onUseQueryConnection(e) {
-			this._searchHandler.newSearch( e.target.getAttribute('data-lookup') );
+			this._pageHandler.newSearch( e.target.getAttribute('data-lookup') );
 		}
 
-		render(json, filtersAndSort) {
+		/**
+		 * Contructs the HTML for the summary section (total count, filters, sort, query corrections)
+		 * @param {object} searchResponse Json from a search request
+		 * @returns {string} HTML string
+		 */
+		render(searchResponse, filtersAndSort) {
 			return [
 				`<div>`,
 				this.renderSort(filtersAndSort.sort),
-				Util.nlsE('searchFound', {total: json.totalCount, time: json.duration/1000}),
+				Util.nlsE('searchFound', {total: searchResponse.totalCount, time: searchResponse.duration/1000}),
 				'</div>',
 				this.renderFilters(filtersAndSort.filters),
-				this.renderQueryCorrection(json)
+				this.renderQueryCorrection(searchResponse)
 			].join('');
 		}
 
+		/**
+		 * Contructs the HTML for the filters per facet
+		 * @param {object} filters from a searchResponse Json
+		 * @returns {string} HTML string
+		 */
 		renderFilters(filters) {
 			let a = [],
 				renderFilter = (type, value)=>
@@ -46,12 +72,17 @@ define(['../Util'], function(Util) {
 			return a.length ? `<div class="filters">${a.join('')}</div>` : '';
 		}
 
-		renderQueryCorrection(json) {
+		/**
+		 * Contructs the HTML for the query correction (did you mean?)
+		 * @param {object} searchResponse Json from a search request
+		 * @returns {string} HTML string
+		 */
+		renderQueryCorrection(searchResponse) {
 			let a = [];
-			if (json.queryCorrections.length) {
+			if (searchResponse.queryCorrections.length) {
 				a.push(
 					`<div class="query-corrections">${Util.nlsE('didYouMean')} `,
-					json.queryCorrections.map(o => {
+					searchResponse.queryCorrections.map(o => {
 						return `<div class="query-correction" data-lookup="${o.correctedQuery}">${o.correctedQuery}</div>`;
 					}),
 					'</div>'
@@ -60,6 +91,11 @@ define(['../Util'], function(Util) {
 			return a.join('');
 		}
 
+		/**
+		 * Contructs the HTML for all the sort options
+		 * @param {object} sortInfo current sort object
+		 * @returns {string} HTML string
+		 */
 		renderSort(sortInfo) {
 			return `<div class="sort-options">
 					${this.renderSortButton(sortInfo, '@tpprixnum', Util.nlsE('sortby_price') )}
@@ -68,6 +104,13 @@ define(['../Util'], function(Util) {
 				</div>`;
 		}
 
+		/**
+		 * Contructs the HTML for sort button
+		 * @param {object} sortInfo current sort object
+		 * @param {string} field field to use for this sort button. ie. @tpprixnum, @tpmillesime, relevancy.
+		 * @param {string} name label to show on the button
+		 * @returns {string} HTML string
+		 */
 		renderSortButton(sortInfo, field, name) {
 			let upOrDown = '&or;&and;';
 			if (field === 'relevancy') {
@@ -79,6 +122,9 @@ define(['../Util'], function(Util) {
 			return `<div class="sort-field ${(sortInfo.field === field ? 'selected':'')}" data-field="${field}">${name} ${upOrDown}</div>`;
 		}
 
+		/**
+		 * helper function to set up events.
+		 */
 		_setEventHandlers(className, handler) {
 			// Can't use forEach on a HTMLCollection, do the old for()
 			let nodes = document.getElementById('results-summary').getElementsByClassName(className);
@@ -88,10 +134,15 @@ define(['../Util'], function(Util) {
 			}
 		}
 
-		show(json, filtersAndSort) {
+		/**
+		 * Show the summary in the UI
+		 * @param {object} searchResponse Json from a search request
+		 * @param {object} filtersAndSort Current state for the filters and sort
+		 */
+		show(searchResponse, filtersAndSort) {
 			let nContainer = document.getElementById('results-summary');
 
-			nContainer.innerHTML = this.render(json, filtersAndSort);
+			nContainer.innerHTML = this.render(searchResponse, filtersAndSort);
 
 			this._setEventHandlers('query-correction', this.onUseQueryConnection);
 			this._setEventHandlers('filter', this.onRemoveFilter);

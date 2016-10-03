@@ -25,8 +25,10 @@ define(['./Ajax'], function(Ajax) {
 			// Use quotes around value, to preserve values with spaces in them.
 			value = `"${value}"`;
 			if (this._filters[field]) {
-				// already have a filter for this field, add the value.
-				this._filters[field].push(value);
+				// already have a filter for this field, add the value. Checking if the value exists first.
+				if ( this._filters[field].indexOf(value) === -1) {
+					this._filters[field].push(value);
+				}
 			}
 			else {
 				// no filter for this field, add the value using an array (for adding more values later).

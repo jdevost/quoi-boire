@@ -1,4 +1,6 @@
-var webpack = require('webpack');
+const path = require('path');
+const sass = require('node-sass');
+const webpack = require('webpack');
 
 module.exports = function(grunt) {
 
@@ -44,6 +46,10 @@ module.exports = function(grunt) {
 		},
 
 		sass: {
+      options: {
+        implementation: sass,
+        sourceMap: true
+      },
 			dist: {
 				options: {
 					outputStyle: 'compressed'
@@ -108,10 +114,10 @@ module.exports = function(grunt) {
 				// webpack options
 				entry: './src/js/QuoiBoireApp.js',
 				output: {
-					path: './dist/',
+					path: path.join(__dirname, "dist/"),
 					filename: 'quoi-boire.js'
 				},
-				'optimize-minimize': true,
+				// 'optimize-minimize': true,
 				plugins: [
 					new webpack.optimize.LimitChunkCountPlugin({maxChunks:1})
 // 					new webpack.optimize.UglifyJsPlugin({
@@ -121,8 +127,8 @@ module.exports = function(grunt) {
 // 					})
 				],
 				resolve: {
-					extensions: ['', '.js', '.jsx'],
-					modulesDirectories: ['./src/js', './tests/unit/mocks']
+					extensions: ['.js', '.jsx']
+					// modulesDirectories: ['./src/js', './tests/unit/mocks']
 				},
 				stats: {
 					// Configure the console output
